@@ -12,7 +12,6 @@ type TArrString = {
 }
 
 export const StringComponent: React.FC = () => {
-    //TODO:
     const [value, setValue] = useState<string>('') //input
     const [reveresArr, setReveresArr] = useState<TArrString[]>([]) // arrStr
     const [loader, setLoader] = useState<boolean>(false) // loader
@@ -74,7 +73,6 @@ export const StringComponent: React.FC = () => {
                         </li>)}
                 </ul>
             </section>
-
         </SolutionLayout>
     );
 };
