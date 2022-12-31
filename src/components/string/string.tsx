@@ -48,13 +48,13 @@ export const StringComponent: React.FC = () => {
 
     }
 
-    const handleSubmit = (event: FormEvent) => {
+    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
         const arr = value.split('').map(item => ({
             item,
             color: ElementStates.Default
         }))
-        reversArray(arr)
+        await reversArray(arr)
         setValue('')
 
     }

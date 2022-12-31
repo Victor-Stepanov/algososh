@@ -1,0 +1,64 @@
+.section {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 980px;
+    width: 100%;
+
+
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+
+}
+
+.buttonsBox {
+    display: flex;
+    align-items: center;
+    max-width: 980px;
+    width: 100%;
+    gap: 52px;
+
+}
+
+.buttonsRadio {
+    display: flex;
+    gap: 40px;
+    max-width: 221px;
+    width: 100%;
+}
+
+.buttonsSorting {
+    max-width: 422px;
+    width: 100%;
+    display: flex;
+    gap: 12px;
+}
+
+
+.list {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 348px;
+    gap: 10px;
+    padding: 0;
+
+}
+
+.list__item {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+.button {
+    max-width: 205px;
+    width: 100%;
+}
