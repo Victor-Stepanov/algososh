@@ -7,6 +7,7 @@ import {delay} from "../../utils/utils";
 
 const stack = new Stack<string>();
 export const StackPage: React.FC = () => {
+  //TODO: Добавить визуальное отоброжение
   const [loader, setLoader] = useState<boolean>(false)
   const [stackItems, setStackItems] = useState<string[]>([]);
   const [stackItem, setStackItem] = useState<string>('');
@@ -20,7 +21,7 @@ export const StackPage: React.FC = () => {
     setLoader(true)
     stack.push(item)
     setStackItems(stack.printItems())
-    await delay(1)
+    await delay(500)
     setStackItem('')
     setLoader(false)
   }
@@ -30,7 +31,7 @@ export const StackPage: React.FC = () => {
     setLoader(true)
     stack.pop()
     setStackItems(stack.printItems())
-    await delay(1)
+    await delay(500)
     setLoader(false)
   }
 
@@ -38,9 +39,11 @@ export const StackPage: React.FC = () => {
     setLoader(true)
     stack.clear()
     setStackItems(stack.printItems())
-    await delay(1)
+    await delay(500)
     setLoader(false)
   }
+
+
 
 
   return (
@@ -62,7 +65,7 @@ export const StackPage: React.FC = () => {
             </form>
             <div className={styles.buttons}>
               <Button text={'Очистить'}
-                      disabled={loader}
+                      isLoader={loader}
                       onClick={handleClearStack}
               />
             </div>
