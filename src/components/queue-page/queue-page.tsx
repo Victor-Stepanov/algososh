@@ -1,9 +1,9 @@
 import React, {ChangeEvent, useState} from "react";
-import {SolutionLayout} from "../ui/solution-layout/solution-layout";
-import styles from "../stack-page/stack.module.css";
-import {Button, Circle, Input} from "../ui";
+import {Button, Circle, Input, SolutionLayout} from "../ui";
+import styles from "./queue.module.css";
 import {Queue} from "./queue";
 import {delay} from "../../utils/utils";
+import {ElementStates} from "../../types/element-states";
 
 const QUEUE_SIZE: number = 7;
 const queue = new Queue<number>(QUEUE_SIZE)
@@ -11,6 +11,7 @@ export const QueuePage: React.FC = () => {
   const [loader, setLoader] = useState<boolean>(false)
   const [queueItem, setQueueItem] = useState<string>('');
   const [queueItems, setQueueItems] = useState<(number | null)[]>([])
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     setQueueItem(event.target.value)
@@ -22,6 +23,7 @@ export const QueuePage: React.FC = () => {
     queue.enqueue(queueItem)
     setQueueItems(queue.printItems())
     await delay(500)
+    setCurrentIndex(currentIndex + 1)
     setLoader(false)
     setQueueItem('')
 
@@ -32,14 +34,16 @@ export const QueuePage: React.FC = () => {
     queue.dequeue()
     setQueueItems(queue.printItems())
     await delay(500)
+    setCurrentIndex(currentIndex - 1)
     setLoader(false)
   }
 
   const handleClearQueue = async () => {
     setLoader(true)
-    queue.clear()
+    queue.clearQueue()
     setQueueItems(queue.printItems())
     await delay(500)
+    setCurrentIndex(0)
     setLoader(false)
   }
 
@@ -77,6 +81,7 @@ export const QueuePage: React.FC = () => {
                   <Circle index={index} letter={String(element)}
                           head={queue.getHead() === index ? "head" : ''}
                           tail={queue.getTail() - 1 === index ? 'tail' : ''}
+                          state={currentIndex === index ? ElementStates.Changing : ElementStates.Default}
                   />
                 </li>)}
           </ul>

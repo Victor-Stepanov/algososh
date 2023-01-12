@@ -1,0 +1,42 @@
+.section {
+    max-width: 952px;
+    margin: auto;
+    gap: 12px;
+}
+
+.container {
+}
+
+.interfaces {
+    max-width: 952px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.interfaceValue {
+    width: 100%;
+    display: flex;
+    height: 86px;
+    column-gap: 12px;
+}
+
+.interfaceIndex {
+    width: 100%;
+    display: flex;
+    column-gap: 12px;
+}
+
+.input {
+    max-width: 204px;
+    width: 100%;
+
+}
+
+.list {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    gap: 16px;
+}

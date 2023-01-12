@@ -15,13 +15,13 @@ interface ILinkedList<T> {
     deleteTail: () => void; //Удалить элемент из хвоста
     getSize: () => number;
     isEmpty: () => boolean; //Пустой ли?
-    print: () => void;
+    toArray: () => []
 
     insertByIndex: (element: T, index: number) => void; // Добавление по индексу
     deleteByIndex: (index: number) => void; //Удаление по индексу
 }
 
-class LinkedList<T> implements ILinkedList<T> {
+export class LinkedList<T> implements ILinkedList<T> {
     private head: Node<T> | null;
     private size: number;
 
@@ -30,7 +30,7 @@ class LinkedList<T> implements ILinkedList<T> {
         this.size = 0;
     }
 
-    append(element: T):void {
+    append(element: T): void {
         const node = new Node(element); //Новый узел
         // ваш код
         if (this.head === null) {
@@ -137,22 +137,17 @@ class LinkedList<T> implements ILinkedList<T> {
 
     isEmpty = (): boolean => this.getSize() === 0;
 
-    print() {
-        let curr = this.head;
-        let res = '';
-        while (curr) {
-            res += `${curr.value} `;
-            curr = curr.next;
-        }
-        console.log(res);
-    }
-}
+    toArray(): [] {
+        const nodes = [];
 
-const list = new LinkedList<number>();
-list.insertByIndex(12, 0);
-list.insertByIndex(13, 0);
-list.insertByIndex(114, 0);
-list.print(); // 13 114 12
-list.deleteTail()
-list.deleteHead()
-list.print()
+        let currentNode = this.head;
+        while (currentNode) {
+            nodes.push(currentNode)
+            currentNode = currentNode.next;
+        }
+
+        // @ts-ignore
+        return nodes;
+    }
+
+}

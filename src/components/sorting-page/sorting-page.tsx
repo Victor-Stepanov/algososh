@@ -1,6 +1,5 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
-import {SolutionLayout} from "../ui/solution-layout/solution-layout";
-import {Button, Column, RadioInput} from "../ui";
+import {Button, Column, RadioInput, SolutionLayout} from "../ui";
 import styles from './sorting-page.module.css';
 import {Direction} from "../../types/direction";
 import {ElementStates} from "../../types/element-states";
@@ -14,7 +13,6 @@ type TSortedArr = {
 export const SortingPage: React.FC = () => {
   const [loader, setLoader] = useState<boolean>(false); //Loader
   const [typeSorting, setTypeSorting] = useState('select') //Тип сортировки
-  const [isAscending, setIsAscending] = useState<boolean>(false); //Флаг по возрастанию
   const [type, setType] = useState<string>('');
   const [sortedArr, setSortedArr] = useState<TSortedArr[]>([]); //Массив для сортировки
 
@@ -44,22 +42,20 @@ export const SortingPage: React.FC = () => {
   }
   //3. Выбираем критерий сортировки
   const handleSelectAscending = async () => {
-    setIsAscending(true)
     setType('ascending')
-    if (typeSorting === 'bubble' && type === 'ascending') {
-      await bubbleSort(sortedArr)
+    if (typeSorting !== 'bubble') {
+      await selectionSortAscending(sortedArr)
     } else {
-      await selectionSort(sortedArr)
+      await bubbleSortAscending(sortedArr)
     }
 
   }
   const handleSelectDescending = async () => {
-    setIsAscending(false)
     setType('descending');
-    if (typeSorting === 'bubble' && type === 'descending') {
-      await bubbleSort(sortedArr)
+    if (typeSorting !== 'bubble') {
+      await selectionSortDescending(sortedArr)
     } else {
-      await selectionSort(sortedArr)
+      await bubbleSortDescending(sortedArr)
     }
 
   }
@@ -69,7 +65,7 @@ export const SortingPage: React.FC = () => {
     [arr[firstIndex].value, arr[secondIndex].value] = [arr[secondIndex].value, arr[firstIndex].value]
   }
 
-  const bubbleSort = async (arr: TSortedArr[]) => {
+  const bubbleSortAscending = async (arr: TSortedArr[]) => {
     setLoader(true)
     const {length} = arr;
     for (let i = 0; i < length; i++) {
@@ -78,19 +74,9 @@ export const SortingPage: React.FC = () => {
         arr[j + 1].color = ElementStates.Changing;
         setSortedArr([...arr])
         await delay(500)
-        //По возрастанию
-        if (isAscending) {
-          if (arr[j].value > arr[j + 1].value) {
-            swap(arr, j, j + 1);
-            await delay(500)
-          }
-        }
-        //По убыванию
-        else {
-          if (arr[j].value < arr[j + 1].value) {
-            swap(arr, j, j + 1);
-            await delay(500)
-          }
+        if (arr[j].value > arr[j + 1].value) {
+          swap(arr, j, j + 1);
+          await delay(500)
         }
         arr[j].color = ElementStates.Default;
         arr[j + 1].color = ElementStates.Default;
@@ -100,49 +86,82 @@ export const SortingPage: React.FC = () => {
     }
     setLoader(false);
   }
-  const selectionSort = async (arr: TSortedArr[]) => {
+
+
+  const bubbleSortDescending = async (arr: TSortedArr[]) => {
     setLoader(true)
     const {length} = arr;
     for (let i = 0; i < length; i++) {
-      if (isAscending) {
-        let maxInd = i;
-        arr[maxInd].color = ElementStates.Changing;
+      for (let j = 0; j < length - i - 1; j++) {
+        arr[j].color = ElementStates.Changing;
+        arr[j + 1].color = ElementStates.Changing;
         setSortedArr([...arr])
         await delay(500)
-        for (let j = i + 1; j < length; j++) {
-          if (arr[j].value > arr[maxInd].value) {
-            maxInd = j;
-          }
+        if (arr[j].value < arr[j + 1].value) {
+          swap(arr, j, j + 1);
+          await delay(500)
         }
-        swap(arr, i, maxInd)
-        arr[maxInd].color = ElementStates.Default;
-        arr[i].color = ElementStates.Modified;
-        setSortedArr([...arr])
-        await delay(500)
-      } else {
-        let minInd = i;
-        arr[minInd].color = ElementStates.Changing;
-        setSortedArr([...arr])
-        await delay(500)
-        for (let j = i + 1; j < length; j++) {
-          if (arr[j].value < arr[minInd].value) {
-            minInd = j;
-          }
-        }
-        swap(arr, i, minInd)
-        arr[minInd].color = ElementStates.Default;
-        arr[i].color = ElementStates.Modified;
-        setSortedArr([...arr])
-        await delay(500)
+        arr[j].color = ElementStates.Default;
+        arr[j + 1].color = ElementStates.Default;
+
       }
+      arr[arr.length - i - 1].color = ElementStates.Modified;
+      await delay(500)
+
+    }
+    setLoader(false);
+
+  }
+
+  const selectionSortAscending = async (arr: TSortedArr[]) => {
+    setLoader(true)
+    const {length} = arr;
+    for (let i = 0; i < length; i++) {
+      let minInd = i;
+      arr[minInd].color = ElementStates.Changing;
+      setSortedArr([...arr])
+      await delay(500)
+      for (let j = i + 1; j < length; j++) {
+        if (arr[j].value < arr[minInd].value) {
+          minInd = j;
+        }
+      }
+      swap(arr, i, minInd)
+      arr[minInd].color = ElementStates.Default;
+      arr[i].color = ElementStates.Modified;
+      setSortedArr([...arr])
+      await delay(500)
+    }
+    setLoader(false)
+  }
+  const selectionSortDescending = async (arr: TSortedArr[]) => {
+    setLoader(true)
+    const {length} = arr;
+    for (let i = 0; i < length; i++) {
+      let maxInd = i;
+      arr[maxInd].color = ElementStates.Changing;
+      setSortedArr([...arr])
+      await delay(500)
+      for (let j = i + 1; j < length; j++) {
+        if (arr[j].value > arr[maxInd].value) {
+          maxInd = j;
+        }
+      }
+      swap(arr, i, maxInd)
+      arr[maxInd].color = ElementStates.Default;
+      arr[i].color = ElementStates.Modified;
+      setSortedArr([...arr])
+      await delay(500)
     }
     setLoader(false)
 
   }
 
+
   useEffect(() => {
     handleCreateNewArr()
   }, [])
+
 
   return (
       <SolutionLayout title="Сортировка массива">

@@ -1,7 +1,6 @@
 import React, {ChangeEvent, FormEvent, useState} from "react";
-import {SolutionLayout} from "../ui/solution-layout/solution-layout";
+import {Button, Circle, Input, SolutionLayout} from "../ui";
 import styles from "./fibonacci.module.css";
-import {Button, Circle, Input} from "../ui";
 import {delay} from "../../utils/utils";
 
 export const FibonacciPage: React.FC = () => {
@@ -14,7 +13,7 @@ export const FibonacciPage: React.FC = () => {
 
   const findFib = async (item: string) => {
     setLoader(true)
-    let result: number[] = [1, 1];
+    let result: number[] = [0, 1];
     for (let i = 2; i <= Number(item); i++) {
       await delay(500);
       result[i] = result[i - 2] + result[i - 1];
@@ -24,17 +23,17 @@ export const FibonacciPage: React.FC = () => {
     setLoader(false)
   }
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    findFib(value)
     setValue('')
+    await findFib(value)
 
   }
 
 
   return (
       <SolutionLayout title="Последовательность Фибоначчи">
-        <section className={styles.container}>
+        <section className={styles.section}>
           <form className={styles.form} onSubmit={handleSubmit}>
             <Input min={1} max={19} isLimitText type="number" value={value}
                    onChange={handleChangeValue}/>

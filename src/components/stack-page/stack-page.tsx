@@ -4,6 +4,7 @@ import {Stack} from "./stack";
 import {Button, Circle, Input} from "../ui";
 import styles from "../stack-page/stack.module.css";
 import {delay} from "../../utils/utils";
+import {ElementStates} from "../../types/element-states";
 
 const stack = new Stack<string>();
 export const StackPage: React.FC = () => {
@@ -11,6 +12,7 @@ export const StackPage: React.FC = () => {
   const [loader, setLoader] = useState<boolean>(false)
   const [stackItems, setStackItems] = useState<string[]>([]);
   const [stackItem, setStackItem] = useState<string>('');
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
 
   const handleChangeValue = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -22,6 +24,7 @@ export const StackPage: React.FC = () => {
     stack.push(item)
     setStackItems(stack.printItems())
     await delay(500)
+    setCurrentIndex(currentIndex + 1)
     setStackItem('')
     setLoader(false)
   }
@@ -32,6 +35,7 @@ export const StackPage: React.FC = () => {
     stack.pop()
     setStackItems(stack.printItems())
     await delay(500)
+    setCurrentIndex(currentIndex - 1)
     setLoader(false)
   }
 
@@ -40,9 +44,9 @@ export const StackPage: React.FC = () => {
     stack.clear()
     setStackItems(stack.printItems())
     await delay(500)
+    setCurrentIndex(0)
     setLoader(false)
   }
-
 
 
 
@@ -59,12 +63,14 @@ export const StackPage: React.FC = () => {
                         onClick={() => handleAddItem(stackItem)}
                 />
                 <Button text={'Удалить'}
+                        disabled={stackItems.length === 0}
                         isLoader={loader}
                         onClick={handleDeleteItem}/>
               </div>
             </form>
             <div className={styles.buttons}>
               <Button text={'Очистить'}
+                      disabled={stackItems.length === 0}
                       isLoader={loader}
                       onClick={handleClearStack}
               />
@@ -73,7 +79,9 @@ export const StackPage: React.FC = () => {
           <ul className={styles.list}>
             {stackItems && stackItems.map((element, index) =>
                 <li className={styles.list__item} key={index}>
-                  <Circle index={index} letter={element} head={stack.peak() === index ? "top" : ''}/>
+                  <Circle index={index} letter={element} head={stack.peak() === index ? "top" : ''}
+                          state={currentIndex === index ? ElementStates.Changing : ElementStates.Default}
+                  />
                 </li>)}
           </ul>
         </section>

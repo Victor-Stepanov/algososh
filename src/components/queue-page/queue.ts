@@ -1,9 +1,12 @@
 interface IQueue<T> {
     enqueue: (item: T) => void;
     dequeue: () => void;
-    peak: () => T | null;
     printItems: () => (T | null)[];
-    clear: () => void;
+    isEmpty: () => boolean;
+    getHead: () => number;
+    getTail: () => number;
+    getLength: () => number;
+    clearQueue: () => void;
 
 }
 
@@ -24,7 +27,7 @@ export class Queue<T> implements IQueue<T> {
             throw new Error("No elements in the queue");
         }
         this.container[this.head % this.size] = null;
-        this.head = this.head + 1 === this.size ? 0 : this.head + 1;
+        this.head++;
         this.length--;
 
     };
@@ -41,22 +44,6 @@ export class Queue<T> implements IQueue<T> {
         this.length++;
     }
 
-    peak = (): T | null => {
-        if (this.isEmpty()) {
-            throw new Error("No elements in the queue");
-        }
-        return null;
-    }
-
-    printItems = (): (T | null)[] => [...this.container];
-    clear = () => {
-        this.head = 0;
-        this.tail = 0;
-        this.length = 0;
-        this.container = [];
-
-    }
-
     isEmpty = () => this.length === 0;
 
 
@@ -71,5 +58,15 @@ export class Queue<T> implements IQueue<T> {
     getLength = () => {
         return this.length;
     }
+
+    printItems = (): (T | null)[] => [...this.container];
+    clearQueue = () => {
+        this.head = 0;
+        this.tail = 0;
+        this.length = 0;
+        this.container = [];
+
+    }
+
 
 }

@@ -1,6 +1,5 @@
 import React, {ChangeEvent, FormEvent, useState} from "react";
-import {SolutionLayout} from "../ui/solution-layout/solution-layout";
-import {Button, Circle, Input} from "../ui";
+import {Button, Circle, Input, SolutionLayout} from "../ui";
 import styles from './string.module.css';
 import {ElementStates} from "../../types/element-states";
 import {delay} from "../../utils/utils";
