@@ -8,11 +8,14 @@ import {ElementStates} from "../../types/element-states";
 
 const stack = new Stack<string>();
 export const StackPage: React.FC = () => {
-  //TODO: Добавить визуальное отоброжение
-  const [loader, setLoader] = useState<boolean>(false)
   const [stackItems, setStackItems] = useState<string[]>([]);
   const [stackItem, setStackItem] = useState<string>('');
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<Record<string, boolean>>({
+    add: false,
+    delete: false,
+    clear: false
+  })
 
 
   const handleChangeValue = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -20,32 +23,32 @@ export const StackPage: React.FC = () => {
   }
 
   const handleAddItem = async (item: string) => {
-    setLoader(true)
+    setIsLoading({...isLoading, add: true})
     stack.push(item)
     setStackItems(stack.printItems())
     await delay(500)
     setCurrentIndex(currentIndex + 1)
     setStackItem('')
-    setLoader(false)
+    setIsLoading({...isLoading, add: false})
   }
 
 
   const handleDeleteItem = async () => {
-    setLoader(true)
+    setIsLoading({...isLoading, delete: true})
     stack.pop()
     setStackItems(stack.printItems())
     await delay(500)
     setCurrentIndex(currentIndex - 1)
-    setLoader(false)
+    setIsLoading({...isLoading, delete: false})
   }
 
   const handleClearStack = async () => {
-    setLoader(true)
+    setIsLoading({...isLoading, clear: true})
     stack.clear()
     setStackItems(stack.printItems())
     await delay(500)
     setCurrentIndex(0)
-    setLoader(false)
+    setIsLoading({...isLoading, clear: false})
   }
 
 
@@ -59,19 +62,19 @@ export const StackPage: React.FC = () => {
               <div className={styles.buttons}>
                 <Button text={'Добавить'}
                         disabled={!stackItem}
-                        isLoader={loader}
+                        isLoader={isLoading.add}
                         onClick={() => handleAddItem(stackItem)}
                 />
                 <Button text={'Удалить'}
                         disabled={stackItems.length === 0}
-                        isLoader={loader}
+                        isLoader={isLoading.delete}
                         onClick={handleDeleteItem}/>
               </div>
             </form>
             <div className={styles.buttons}>
               <Button text={'Очистить'}
                       disabled={stackItems.length === 0}
-                      isLoader={loader}
+                      isLoader={isLoading.clear}
                       onClick={handleClearStack}
               />
             </div>

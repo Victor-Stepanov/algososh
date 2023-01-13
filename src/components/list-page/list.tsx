@@ -15,7 +15,7 @@ interface ILinkedList<T> {
     deleteTail: () => void; //Удалить элемент из хвоста
     getSize: () => number;
     isEmpty: () => boolean; //Пустой ли?
-    toArray: () => []
+    toArray: () => T[]
 
     insertByIndex: (element: T, index: number) => void; // Добавление по индексу
     deleteByIndex: (index: number) => void; //Удаление по индексу
@@ -137,17 +137,18 @@ export class LinkedList<T> implements ILinkedList<T> {
 
     isEmpty = (): boolean => this.getSize() === 0;
 
-    toArray(): [] {
+    toArray(): T[] {
         const nodes = [];
 
         let currentNode = this.head;
         while (currentNode) {
-            nodes.push(currentNode)
+            nodes.push(currentNode.value)
             currentNode = currentNode.next;
         }
 
-        // @ts-ignore
+
         return nodes;
     }
 
 }
+

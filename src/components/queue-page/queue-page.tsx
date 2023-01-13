@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, FormEvent, useState} from "react";
 import {Button, Circle, Input, SolutionLayout} from "../ui";
 import styles from "./queue.module.css";
 import {Queue} from "./queue";
@@ -8,10 +8,14 @@ import {ElementStates} from "../../types/element-states";
 const QUEUE_SIZE: number = 7;
 const queue = new Queue<number>(QUEUE_SIZE)
 export const QueuePage: React.FC = () => {
-  const [loader, setLoader] = useState<boolean>(false)
   const [queueItem, setQueueItem] = useState<string>('');
   const [queueItems, setQueueItems] = useState<(number | null)[]>([])
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<Record<string, boolean>>({
+    add: false,
+    delete: false,
+    clear: false
+  })
 
   const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     setQueueItem(event.target.value)
@@ -19,32 +23,32 @@ export const QueuePage: React.FC = () => {
 
   const handleAddItem = async (item: string) => {
     let queueItem = Number(item);
-    setLoader(true)
+    setIsLoading({...isLoading, add: true})
     queue.enqueue(queueItem)
     setQueueItems(queue.printItems())
     await delay(500)
     setCurrentIndex(currentIndex + 1)
-    setLoader(false)
+    setIsLoading({...isLoading, add: false})
     setQueueItem('')
 
   }
 
   const handleDeleteItem = async () => {
-    setLoader(true)
+    setIsLoading({...isLoading, delete: true})
     queue.dequeue()
     setQueueItems(queue.printItems())
     await delay(500)
     setCurrentIndex(currentIndex - 1)
-    setLoader(false)
+    setIsLoading({...isLoading, delete: false})
   }
 
   const handleClearQueue = async () => {
-    setLoader(true)
+    setIsLoading({...isLoading, clear: true})
     queue.clearQueue()
     setQueueItems(queue.printItems())
     await delay(500)
     setCurrentIndex(0)
-    setLoader(false)
+    setIsLoading({...isLoading, clear: false})
   }
 
 
@@ -52,16 +56,16 @@ export const QueuePage: React.FC = () => {
       <SolutionLayout title="Очередь">
         <section className={styles.section}>
           <div className={styles.container}>
-            <form className={styles.form} onSubmit={(event) => event.preventDefault()}>
+            <form className={styles.form} onSubmit={(event: FormEvent<HTMLFormElement>) => event.preventDefault()}>
               <Input isLimitText={true} maxLength={4} value={queueItem} onChange={handleChangeInput}/>
               <div className={styles.buttons}>
                 <Button text={'Добавить'}
-                        isLoader={loader}
+                        isLoader={isLoading.add}
                         disabled={QUEUE_SIZE === queue.getLength() || !queueItem}
                         onClick={() => handleAddItem(queueItem)}
                 />
                 <Button text={'Удалить'}
-                        isLoader={loader}
+                        isLoader={isLoading.delete}
                         disabled={queue.isEmpty()}
                         onClick={handleDeleteItem}
                 />
@@ -69,7 +73,7 @@ export const QueuePage: React.FC = () => {
             </form>
             <div className={styles.buttons}>
               <Button text={'Очистить'}
-                      isLoader={loader}
+                      isLoader={isLoading.clear}
                       disabled={queue.isEmpty()}
                       onClick={handleClearQueue}
               />

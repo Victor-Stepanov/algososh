@@ -11,10 +11,12 @@ type TSortedArr = {
   color: ElementStates
 }
 export const SortingPage: React.FC = () => {
-  const [loader, setLoader] = useState<boolean>(false); //Loader
   const [typeSorting, setTypeSorting] = useState('select') //Тип сортировки
-  const [type, setType] = useState<string>('');
   const [sortedArr, setSortedArr] = useState<TSortedArr[]>([]); //Массив для сортировки
+  const [isLoading, setIsLoading] = useState<Record<string, boolean>>({
+    ascending: false,
+    descending: false
+  })
 
 
   //1. Создаем новый массив
@@ -42,7 +44,6 @@ export const SortingPage: React.FC = () => {
   }
   //3. Выбираем критерий сортировки
   const handleSelectAscending = async () => {
-    setType('ascending')
     if (typeSorting !== 'bubble') {
       await selectionSortAscending(sortedArr)
     } else {
@@ -51,7 +52,6 @@ export const SortingPage: React.FC = () => {
 
   }
   const handleSelectDescending = async () => {
-    setType('descending');
     if (typeSorting !== 'bubble') {
       await selectionSortDescending(sortedArr)
     } else {
@@ -66,7 +66,7 @@ export const SortingPage: React.FC = () => {
   }
 
   const bubbleSortAscending = async (arr: TSortedArr[]) => {
-    setLoader(true)
+    setIsLoading({...isLoading, ascending: true})
     const {length} = arr;
     for (let i = 0; i < length; i++) {
       for (let j = 0; j < length - i - 1; j++) {
@@ -84,12 +84,12 @@ export const SortingPage: React.FC = () => {
       arr[arr.length - i - 1].color = ElementStates.Modified;
       await delay(500)
     }
-    setLoader(false);
+    setIsLoading({...isLoading, ascending: false})
   }
 
 
   const bubbleSortDescending = async (arr: TSortedArr[]) => {
-    setLoader(true)
+    setIsLoading({...isLoading, descending: true})
     const {length} = arr;
     for (let i = 0; i < length; i++) {
       for (let j = 0; j < length - i - 1; j++) {
@@ -109,12 +109,12 @@ export const SortingPage: React.FC = () => {
       await delay(500)
 
     }
-    setLoader(false);
+    setIsLoading({...isLoading, descending: false})
 
   }
 
   const selectionSortAscending = async (arr: TSortedArr[]) => {
-    setLoader(true)
+    setIsLoading({...isLoading, ascending: true})
     const {length} = arr;
     for (let i = 0; i < length; i++) {
       let minInd = i;
@@ -132,10 +132,10 @@ export const SortingPage: React.FC = () => {
       setSortedArr([...arr])
       await delay(500)
     }
-    setLoader(false)
+    setIsLoading({...isLoading, ascending: false})
   }
   const selectionSortDescending = async (arr: TSortedArr[]) => {
-    setLoader(true)
+    setIsLoading({...isLoading, ascending: true})
     const {length} = arr;
     for (let i = 0; i < length; i++) {
       let maxInd = i;
@@ -153,7 +153,7 @@ export const SortingPage: React.FC = () => {
       setSortedArr([...arr])
       await delay(500)
     }
-    setLoader(false)
+    setIsLoading({...isLoading, ascending: false})
 
   }
 
@@ -185,18 +185,19 @@ export const SortingPage: React.FC = () => {
               <div className={styles.buttonsSorting}>
                 <Button text={'По возрастанию'}
                         sorting={Direction.Ascending}
-                        disabled={loader}
                         onClick={handleSelectAscending}
-                        isLoader={loader && type === 'ascending'}
+                        disabled={isLoading.descending}
+                        isLoader={isLoading.ascending}
                 />
                 <Button text={'По убыванию'}
                         sorting={Direction.Descending}
-                        disabled={loader}
-                        isLoader={loader && type === 'descending'}
+                        disabled={isLoading.ascending}
+                        isLoader={isLoading.descending}
                         onClick={handleSelectDescending}/>
               </div>
               <div className={styles.buttonsArr}>
-                <Button onClick={handleCreateNewArr} disabled={loader} text={'Новый массив'}/>
+                <Button onClick={handleCreateNewArr} disabled={isLoading.ascending || isLoading.descending}
+                        text={'Новый массив'}/>
               </div>
             </div>
             <ul className={styles.list}>

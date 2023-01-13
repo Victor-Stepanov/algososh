@@ -13,7 +13,7 @@ type TArrString = {
 export const StringComponent: React.FC = () => {
     const [value, setValue] = useState<string>('') //input
     const [reveresArr, setReveresArr] = useState<TArrString[]>([]) // arrStr
-    const [loader, setLoader] = useState<boolean>(false) // loader
+    const [isLoading, setIsLoading] = useState<boolean>(false) // loader
     const handleChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value)
     }
@@ -26,7 +26,7 @@ export const StringComponent: React.FC = () => {
 
 
     const reversArray = async (arr: TArrString[]) => {
-        setLoader(true);
+        setIsLoading(true);
         const {length} = arr;
         let start = 0, end = length - 1
         while (start <= end) {
@@ -43,7 +43,7 @@ export const StringComponent: React.FC = () => {
             start++;
             end--;
         }
-        setLoader(false)
+        setIsLoading(false)
 
     }
 
@@ -63,7 +63,8 @@ export const StringComponent: React.FC = () => {
             <section className={styles.container}>
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <Input isLimitText={true} maxLength={11} value={value} onChange={handleChangeValue}/>
-                    <Button onClick={handleSubmit} text="Развернуть" isLoader={loader} type='submit' disabled={!value}/>
+                    <Button onClick={handleSubmit} text="Развернуть" isLoader={isLoading} type='submit'
+                            disabled={!value}/>
                 </form>
                 <ul className={styles.list}>
                     {reveresArr.map((element, index) =>
