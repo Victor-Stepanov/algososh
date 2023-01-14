@@ -135,7 +135,7 @@ export const SortingPage: React.FC = () => {
     setIsLoading({...isLoading, ascending: false})
   }
   const selectionSortDescending = async (arr: TSortedArr[]) => {
-    setIsLoading({...isLoading, ascending: true})
+    setIsLoading({...isLoading, descending: true})
     const {length} = arr;
     for (let i = 0; i < length; i++) {
       let maxInd = i;
@@ -153,7 +153,7 @@ export const SortingPage: React.FC = () => {
       setSortedArr([...arr])
       await delay(500)
     }
-    setIsLoading({...isLoading, ascending: false})
+    setIsLoading({...isLoading, descending: false})
 
   }
 
@@ -171,13 +171,13 @@ export const SortingPage: React.FC = () => {
               <div className={styles.buttonsRadio}>
                 <RadioInput
                     label={"Выбор"}
-                    value='select'
+                    value={'select'}
                     checked={typeSorting === 'select'}
                     onChange={handleSelectSorting}
                 />
                 <RadioInput
                     label={"Пузырёк"}
-                    value='bubble'
+                    value={'bubble'}
                     checked={typeSorting === 'bubble'}
                     onChange={handleSelectSorting}
                 />

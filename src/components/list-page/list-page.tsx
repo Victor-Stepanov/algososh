@@ -293,7 +293,7 @@ export const ListPage: React.FC = () => {
                         state={element.color}
                         letter={String(element.value)}
                         head={index === 0 && element.action !== ListItemAction.Add ? "head" : ""}
-                        tail={index === listItems.length - 1 ? "tail" : ""}
+                        tail={index === listItems.length - 1 && element.action !== ListItemAction.Add ? "tail" : ""}
                     />
                     {index < listItems.length - 1 && <ArrowIcon/>}
                     {element.action === ListItemAction.Delete && (
