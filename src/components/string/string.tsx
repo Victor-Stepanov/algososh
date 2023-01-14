@@ -1,6 +1,5 @@
 import React, {ChangeEvent, FormEvent, useState} from "react";
-import {SolutionLayout} from "../ui/solution-layout/solution-layout";
-import {Button, Circle, Input} from "../ui";
+import {Button, Circle, Input, SolutionLayout} from "../ui";
 import styles from './string.module.css';
 import {ElementStates} from "../../types/element-states";
 import {delay} from "../../utils/utils";
@@ -14,7 +13,7 @@ type TArrString = {
 export const StringComponent: React.FC = () => {
     const [value, setValue] = useState<string>('') //input
     const [reveresArr, setReveresArr] = useState<TArrString[]>([]) // arrStr
-    const [loader, setLoader] = useState<boolean>(false) // loader
+    const [isLoading, setIsLoading] = useState<boolean>(false) // loader
     const handleChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value)
     }
@@ -27,7 +26,7 @@ export const StringComponent: React.FC = () => {
 
 
     const reversArray = async (arr: TArrString[]) => {
-        setLoader(true);
+        setIsLoading(true);
         const {length} = arr;
         let start = 0, end = length - 1
         while (start <= end) {
@@ -44,17 +43,17 @@ export const StringComponent: React.FC = () => {
             start++;
             end--;
         }
-        setLoader(false)
+        setIsLoading(false)
 
     }
 
-    const handleSubmit = (event: FormEvent) => {
+    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
         const arr = value.split('').map(item => ({
             item,
             color: ElementStates.Default
         }))
-        reversArray(arr)
+        await reversArray(arr)
         setValue('')
 
     }
@@ -64,11 +63,12 @@ export const StringComponent: React.FC = () => {
             <section className={styles.container}>
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <Input isLimitText={true} maxLength={11} value={value} onChange={handleChangeValue}/>
-                    <Button onClick={handleSubmit} text="Развернуть" isLoader={loader} type='submit' disabled={!value}/>
+                    <Button onClick={handleSubmit} text="Развернуть" isLoader={isLoading} type='submit'
+                            disabled={!value}/>
                 </form>
                 <ul className={styles.list}>
                     {reveresArr.map((element, index) =>
-                        <li className={styles.list__item} key={index}>
+                        <li key={index}>
                             <Circle letter={element.item} state={element.color}/>
                         </li>)}
                 </ul>
