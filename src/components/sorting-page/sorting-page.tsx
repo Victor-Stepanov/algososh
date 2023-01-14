@@ -201,7 +201,7 @@ export const SortingPage: React.FC = () => {
               </div>
             </div>
             <ul className={styles.list}>
-              {sortedArr && sortedArr.map((item, index) => <li className={styles.list__item} key={index}>
+              {sortedArr && sortedArr.map((item, index) => <li key={index}>
                 <Column index={item.value} state={item.color}/>
               </li>)}
             </ul>

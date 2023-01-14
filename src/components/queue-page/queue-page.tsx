@@ -82,7 +82,7 @@ export const QueuePage: React.FC = () => {
                 </div>
                 <ul className={styles.list}>
                     {queueItems && queueItems.map((element, index) =>
-                        <li className={styles.list__item} key={index}>
+                        <li key={index}>
                             <Circle index={index} letter={String(element)}
                                     head={queue.getHead() === index ? "head" : ''}
                                     tail={queue.getTail() - 1 === index ? 'tail' : ''}

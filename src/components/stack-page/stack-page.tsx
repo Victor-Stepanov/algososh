@@ -81,7 +81,7 @@ export const StackPage: React.FC = () => {
           </div>
           <ul className={styles.list}>
             {stackItems && stackItems.map((element, index) =>
-                <li className={styles.list__item} key={index}>
+                <li key={index}>
                   <Circle index={index} letter={element} head={stack.peak() === index ? "top" : ''}
                           state={currentIndex === index ? ElementStates.Changing : ElementStates.Default}
                   />
