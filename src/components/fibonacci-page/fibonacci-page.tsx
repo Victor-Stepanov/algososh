@@ -25,8 +25,8 @@ export const FibonacciPage: React.FC = () => {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    setValue('')
     await findFib(value)
+    setValue('')
 
   }
 
@@ -42,7 +42,7 @@ export const FibonacciPage: React.FC = () => {
           </form>
           <ul className={styles.list}>
             {fibArr.map((element, index) =>
-                <li className={styles.list__item} key={index}>
+                <li key={index}>
                   <Circle index={index} letter={element.toString()}/>
                 </li>)}
           </ul>

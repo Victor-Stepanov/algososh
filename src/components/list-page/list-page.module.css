@@ -45,3 +45,23 @@
     flex-wrap: wrap;
     gap: 16px;
 }
+
+.listItem {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.circleAdd {
+    position: absolute;
+    top: -57px;
+    left: 10px;
+
+}
+
+.circleDelete {
+    position: absolute;
+    top: 128px;
+    left: 10px;
+
+}

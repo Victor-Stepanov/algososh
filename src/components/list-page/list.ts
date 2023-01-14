@@ -139,13 +139,11 @@ export class LinkedList<T> implements ILinkedList<T> {
 
     toArray(): T[] {
         const nodes = [];
-
         let currentNode = this.head;
         while (currentNode) {
             nodes.push(currentNode.value)
             currentNode = currentNode.next;
         }
-
 
         return nodes;
     }

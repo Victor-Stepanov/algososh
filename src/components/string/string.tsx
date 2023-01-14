@@ -68,7 +68,7 @@ export const StringComponent: React.FC = () => {
                 </form>
                 <ul className={styles.list}>
                     {reveresArr.map((element, index) =>
-                        <li className={styles.list__item} key={index}>
+                        <li key={index}>
                             <Circle letter={element.item} state={element.color}/>
                         </li>)}
                 </ul>

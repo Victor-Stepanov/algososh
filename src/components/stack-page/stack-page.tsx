@@ -28,8 +28,8 @@ export const StackPage: React.FC = () => {
     setStackItems(stack.printItems())
     await delay(500)
     setCurrentIndex(currentIndex + 1)
-    setStackItem('')
     setIsLoading({...isLoading, add: false})
+    setStackItem('')
   }
 
 

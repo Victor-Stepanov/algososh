@@ -42,7 +42,7 @@ export const SortingPage: React.FC = () => {
   const handleSelectSorting = (event: ChangeEvent<HTMLInputElement>) => {
     setTypeSorting(event.target.value)
   }
-  //3. Выбираем критерий сортировки
+  //3. Выбираем тип сортировки
   const handleSelectAscending = async () => {
     if (typeSorting !== 'bubble') {
       await selectionSortAscending(sortedArr)

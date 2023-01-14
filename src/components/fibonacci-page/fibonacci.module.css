@@ -19,6 +19,7 @@
     max-width: 944px;
     width: 100%;
     display: flex;
+    justify-content: center;
     list-style: none;
     flex-wrap: wrap;
     column-gap: 16px;
