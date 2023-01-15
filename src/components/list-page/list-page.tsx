@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, FC, useState} from "react";
 import {ArrowIcon, Button, Circle, Input, SolutionLayout} from "../ui";
 import {LinkedList} from "./list";
 import styles from './list-page.module.css';
@@ -14,36 +14,25 @@ enum ListItemAction {
 }
 
 type TListItem = {
-    value: number | null,
+    value: string,
     color: ElementStates,
     action?: ListItemAction,
     circle?: {
-        value: number | null
+        value: string;
     }
 
 }
+const initialArr = ['12', '33', '44', '55'];
+const list = new LinkedList<string>(initialArr)
+const defaultArr: TListItem[] = initialArr.map((item) => ({
+    value: item,
+    color: ElementStates.Default,
+}))
 
-const list = new LinkedList<number>()
-const getRandomInt = (minLength: number = 4, maxLength: number = 6) =>
-    Math.floor(Math.random() * (maxLength - minLength) + minLength)
-
-const newRandomArr = (): TListItem[] => {
-    const arr = [];
-    const arrLength = getRandomInt()
-    for (let i = 0; i < arrLength; i++) {
-        arr.push({
-            value: Math.round(Math.random() * 100),
-            color: ElementStates.Default
-
-        })
-    }
-    return arr;
-}
-
-export const ListPage: React.FC = () => {
-    const [listItem, setListItem] = useState<string>('');
-    const [listIndex, setListIndex] = useState<string>('');
-    const [listItems, setListItems] = useState<TListItem[]>(newRandomArr())
+export const ListPage: FC = () => {
+    const [listItem, setListItem] = useState('');
+    const [listIndex, setListIndex] = useState('');
+    const [listItems, setListItems] = useState<TListItem[]>(defaultArr)
     const [isLoading, setIsLoading] = useState<Record<string, boolean>>({
         prepend: false,
         append: false,
@@ -64,13 +53,12 @@ export const ListPage: React.FC = () => {
     }
     const handlePrepend = async (item: string) => {
         setIsLoading({...isLoading, prepend: true})
-        const value = Number(item)
-        list.prepend(value)
+        list.prepend(item)
         listItems[0] = {
             ...listItems[0],
             action: ListItemAction.Add,
             circle: {
-                value: value
+                value: item
             },
         }
         setListItems([...listItems])
@@ -79,11 +67,11 @@ export const ListPage: React.FC = () => {
             ...listItems[0],
             action: ListItemAction.Default,
             circle: {
-                value: null
+                value: ''
             },
         }
         listItems.unshift({
-            value: value,
+            value: item,
             color: ElementStates.Modified
         })
         setListItems([...listItems])
@@ -98,15 +86,14 @@ export const ListPage: React.FC = () => {
     }
     const handleAppend = async (item: string) => {
         setIsLoading({...isLoading, append: true})
-        const value = Number(item)
-        list.append(value)
+        list.append(item)
         const {length} = listItems;
         const lastItem = length - 1;
         listItems[lastItem] = {
             ...listItems[lastItem],
             action: ListItemAction.Add,
             circle: {
-                value: value
+                value: item
             },
         }
         setListItems([...listItems])
@@ -115,11 +102,11 @@ export const ListPage: React.FC = () => {
             ...listItems[lastItem],
             action: ListItemAction.Default,
             circle: {
-                value: null
+                value: ''
             },
         }
         listItems.push({
-            value: value,
+            value: item,
             color: ElementStates.Modified
         })
         setListItems([...listItems])
@@ -133,11 +120,11 @@ export const ListPage: React.FC = () => {
         setIsLoading({...isLoading, removeHead: true})
         listItems[0] = {
             ...listItems[0],
-            value: null,
+            value: '',
             action: ListItemAction.Delete,
             color: ElementStates.Modified,
             circle: {
-                value: listItems[0].value as number
+                value: listItems[0].value
             },
         }
         list.deleteHead()
@@ -154,11 +141,11 @@ export const ListPage: React.FC = () => {
         const lastItem = length - 1;
         listItems[lastItem] = {
             ...listItems[lastItem],
-            value: null,
+            value: '',
             action: ListItemAction.Delete,
             color: ElementStates.Modified,
             circle: {
-                value: listItems[0].value as number
+                value: listItems[0].value
             },
         }
         list.deleteTail()
@@ -170,17 +157,16 @@ export const ListPage: React.FC = () => {
 
     }
     const handelAddByIndex = async (item: string, id: string) => {
-        const value = Number(item);
         const valueId = Number(id)
         let idx = 0;
         setIsLoading({...isLoading, addByIndex: true})
-        list.insertByIndex(value, valueId)
+        list.insertByIndex(item, valueId)
         while (idx <= valueId) {
             listItems[idx] = {
                 ...listItems[idx],
                 action: ListItemAction.Add,
                 circle: {
-                    value: value
+                    value: item
                 }
             }
             if (idx > 0) {
@@ -189,7 +175,7 @@ export const ListPage: React.FC = () => {
                     action: ListItemAction.Default,
                     color: ElementStates.Changing,
                     circle: {
-                        value: null
+                        value: ''
                     }
                 }
             }
@@ -201,11 +187,11 @@ export const ListPage: React.FC = () => {
             ...listItems[valueId],
             action: ListItemAction.Default,
             circle: {
-                value: null
+                value: ''
             }
         }
         listItems.splice(valueId, 0, {
-            value: value,
+            value: item,
             color: ElementStates.Modified
         })
         listItems.map(item => item.color = ElementStates.Default)
@@ -220,8 +206,6 @@ export const ListPage: React.FC = () => {
         const valueId = Number(id)
         let idx = 0;
         setIsLoading({...isLoading, deleteByIndex: true})
-        if (valueId > list.getSize()) {
-        }
         list.deleteByIndex(valueId)
         while (idx <= valueId) {
             listItems[idx].color = ElementStates.Changing;
@@ -231,7 +215,7 @@ export const ListPage: React.FC = () => {
         }
         listItems[valueId] = {
             ...listItems[valueId],
-            value: null,
+            value: '',
             action: ListItemAction.Delete,
             circle: {
                 value: listItems[valueId].value
@@ -269,11 +253,14 @@ export const ListPage: React.FC = () => {
                                     onClick={handleRemoveFromTail}/>
                         </form>
                         <form className={styles.interfaceIndex} onSubmit={(event) => event.preventDefault()}>
-                            <Input value={listIndex} onChange={handleChangeIndex} placeholder={'Введите индекс'}
+                            <Input value={listIndex} min={0} type="number" onChange={handleChangeIndex}
+                                   placeholder={'Введите индекс'}
                                    extraClass={styles.input}/>
-                            <Button disabled={!listIndex} isLoader={isLoading.addByIndex} text={'Добавить по индексу'}
+                            <Button disabled={!listIndex || Number(listIndex) > list.sizeList - 1}
+                                    isLoader={isLoading.addByIndex} text={'Добавить по индексу'}
                                     onClick={() => handelAddByIndex(listItem, listIndex)}/>
-                            <Button disabled={!listIndex} text={'Удалить по индексу'} isLoader={isLoading.deleteByIndex}
+                            <Button disabled={!listIndex || Number(listIndex) > list.sizeList - 1}
+                                    text={'Удалить по индексу'} isLoader={isLoading.deleteByIndex}
                                     onClick={() => handelDeleteByIndex(listIndex)}/>
                         </form>
                     </div>

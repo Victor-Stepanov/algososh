@@ -3,14 +3,15 @@ interface IStack<T> {
     pop: () => void;
     clear: () => void;
     peak: () => number;
-    getSize: () => number;
     printItems: () => T[];
 }
 
 export class Stack<T> implements IStack<T> {
     private container: T[] = [];
 
-    peak = (): number => this.getSize() - 1;
+    get sizeStack(): number {
+        return this.container.length
+    };
 
     pop = (): void => {
         this.container.pop()
@@ -26,7 +27,8 @@ export class Stack<T> implements IStack<T> {
         this.container = [];
 
     }
-    getSize = (): number => this.container.length;
+
+    peak = (): number => this.sizeStack - 1;
 
     printItems = (): T[] => this.container;
 
