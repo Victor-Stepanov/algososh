@@ -13,7 +13,6 @@ interface ILinkedList<T> {
     prepend: (element: T) => void; // Добавление нового элемента в начало списка
     deleteHead: () => void; //Удалить элемент из головы
     deleteTail: () => void; //Удалить элемент из хвоста
-    getSize: () => number;
     isEmpty: () => boolean; //Пустой ли?
     toArray: () => T[]
 
@@ -25,9 +24,10 @@ export class LinkedList<T> implements ILinkedList<T> {
     private head: Node<T> | null;
     private size: number;
 
-    constructor() {
+    constructor(arr: T[]) {
         this.head = null;
         this.size = 0;
+        arr.forEach(item => this.append(item))
     }
 
     append(element: T): void {
@@ -131,11 +131,11 @@ export class LinkedList<T> implements ILinkedList<T> {
 
     }
 
-    getSize(): number {
+    get sizeList(): number {
         return this.size;
     }
 
-    isEmpty = (): boolean => this.getSize() === 0;
+    isEmpty = (): boolean => this.sizeList === 0;
 
     toArray(): T[] {
         const nodes = [];

@@ -1,16 +1,15 @@
-import React, {ChangeEvent, useState} from "react";
-import {SolutionLayout} from "../ui/solution-layout/solution-layout";
+import React, {ChangeEvent, FC, useState} from "react";
+import {Button, Circle, Input, SolutionLayout} from "../ui";
 import {Stack} from "./stack";
-import {Button, Circle, Input} from "../ui";
 import styles from "../stack-page/stack.module.css";
 import {delay} from "../../utils/utils";
 import {ElementStates} from "../../types/element-states";
 
 const stack = new Stack<string>();
-export const StackPage: React.FC = () => {
+export const StackPage: FC = () => {
   const [stackItems, setStackItems] = useState<string[]>([]);
-  const [stackItem, setStackItem] = useState<string>('');
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [stackItem, setStackItem] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState<Record<string, boolean>>({
     add: false,
     delete: false,

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FormEvent, useState} from "react";
+import React, {ChangeEvent, FC, FormEvent, useState} from "react";
 import {Button, Circle, Input, SolutionLayout} from "../ui";
 import styles from './string.module.css';
 import {ElementStates} from "../../types/element-states";
@@ -10,10 +10,10 @@ type TArrString = {
     color: ElementStates
 }
 
-export const StringComponent: React.FC = () => {
-    const [value, setValue] = useState<string>('') //input
+export const StringComponent: FC = () => {
+    const [value, setValue] = useState('') //input
     const [reveresArr, setReveresArr] = useState<TArrString[]>([]) // arrStr
-    const [isLoading, setIsLoading] = useState<boolean>(false) // loader
+    const [isLoading, setIsLoading] = useState(false) // loader
     const handleChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value)
     }

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, {ChangeEvent, FC, useEffect, useState} from "react";
 import {Button, Column, RadioInput, SolutionLayout} from "../ui";
 import styles from './sorting-page.module.css';
 import {Direction} from "../../types/direction";
@@ -10,7 +10,8 @@ type TSortedArr = {
   value: number,
   color: ElementStates
 }
-export const SortingPage: React.FC = () => {
+
+export const SortingPage: FC = () => {
   const [typeSorting, setTypeSorting] = useState('select') //Тип сортировки
   const [sortedArr, setSortedArr] = useState<TSortedArr[]>([]); //Массив для сортировки
   const [isLoading, setIsLoading] = useState<Record<string, boolean>>({

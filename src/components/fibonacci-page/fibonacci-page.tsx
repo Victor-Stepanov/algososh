@@ -1,10 +1,10 @@
-import React, {ChangeEvent, FormEvent, useState} from "react";
+import React, {ChangeEvent, FC, FormEvent, useState} from "react";
 import {Button, Circle, Input, SolutionLayout} from "../ui";
 import styles from "./fibonacci.module.css";
 import {delay} from "../../utils/utils";
 
-export const FibonacciPage: React.FC = () => {
-    const [value, setValue] = useState<string>('') //input
+export const FibonacciPage: FC = () => {
+    const [value, setValue] = useState('') //input
     const [fibArr, setFibArr] = useState<number[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false) // loader
     const handleChangeValue = (event: ChangeEvent<HTMLInputElement>) => {

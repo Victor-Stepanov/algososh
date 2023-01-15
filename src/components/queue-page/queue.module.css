@@ -25,6 +25,7 @@
 }
 
 .list {
+    margin-top: 48px;
     display: flex;
     list-style: none;
     flex-wrap: wrap;
