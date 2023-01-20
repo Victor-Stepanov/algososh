@@ -3,12 +3,9 @@ import {Button, Circle, Input, SolutionLayout} from "../ui";
 import styles from './string.module.css';
 import {ElementStates} from "../../types/element-states";
 import {delay} from "../../utils/utils";
+import {swap} from "./helpers/utils";
+import {TArrString} from "./helpers/string.types";
 
-
-type TArrString = {
-    item: string;
-    color: ElementStates
-}
 
 export const StringComponent: FC = () => {
     const [value, setValue] = useState('') //input
@@ -19,13 +16,9 @@ export const StringComponent: FC = () => {
     }
 
     //Swap элементов
-    const swap = (arr: TArrString[], firstIndex: number, secondIndex: number): void => {
-        [arr[firstIndex], arr[secondIndex]] = [arr[secondIndex], arr[firstIndex]]
-
-    }
-
 
     const reversArray = async (arr: TArrString[]) => {
+        console.log(arr)
         setIsLoading(true);
         const {length} = arr;
         let start = 0, end = length - 1
@@ -75,4 +68,6 @@ export const StringComponent: FC = () => {
             </section>
         </SolutionLayout>
     );
+
 };
+
