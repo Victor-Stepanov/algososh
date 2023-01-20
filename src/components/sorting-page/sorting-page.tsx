@@ -4,12 +4,9 @@ import styles from './sorting-page.module.css';
 import {Direction} from "../../types/direction";
 import {ElementStates} from "../../types/element-states";
 import {delay} from "../../utils/utils";
+import {TSortedArr} from "./helpers/sorting.types";
+import {newRandomArr, swap} from "./helpers/utils";
 
-
-type TSortedArr = {
-  value: number,
-  color: ElementStates
-}
 
 export const SortingPage: FC = () => {
   const [typeSorting, setTypeSorting] = useState('select') //Тип сортировки
@@ -20,22 +17,6 @@ export const SortingPage: FC = () => {
   })
 
 
-  //1. Создаем новый массив
-  const getRandomInt = (minLength: number = 3, maxLength: number = 17) =>
-      Math.floor(Math.random() * (maxLength - minLength) + minLength)
-
-  const newRandomArr = (): TSortedArr[] => {
-    const arr = [];
-    const arrLength = getRandomInt()
-    for (let i = 0; i < arrLength; i++) {
-      arr.push({
-        value: Math.round(Math.random() * 100),
-        color: ElementStates.Default
-
-      })
-    }
-    return arr;
-  }
   const handleCreateNewArr = () => {
     setSortedArr([...newRandomArr()])
   }
@@ -61,10 +42,6 @@ export const SortingPage: FC = () => {
 
   }
 
-  //4. Сортировки
-  const swap = (arr: TSortedArr[], firstIndex: number, secondIndex: number): void => {
-    [arr[firstIndex].value, arr[secondIndex].value] = [arr[secondIndex].value, arr[firstIndex].value]
-  }
 
   const bubbleSortAscending = async (arr: TSortedArr[]) => {
     setIsLoading({...isLoading, ascending: true})

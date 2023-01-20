@@ -1,6 +1,7 @@
 import {ElementStates} from "../../../types/element-states";
+import {TArrString} from "./string.types";
 
-export const firstTest = [
+export const firstTest: TArrString[] = [
     {
         item: 'h',
         color: ElementStates.Default
@@ -19,7 +20,7 @@ export const firstTest = [
     },
 
 ]
-export const firstTestRevers = [
+export const firstTestRevers: TArrString[] = [
     {
         item: 'p',
         color: ElementStates.Modified
@@ -39,7 +40,7 @@ export const firstTestRevers = [
 
 ]
 
-export const secondTest = [
+export const secondTest: TArrString[] = [
     {
         item: 'h',
         color: ElementStates.Default
@@ -55,7 +56,7 @@ export const secondTest = [
 
 
 ]
-export const secondTestRevers = [
+export const secondTestRevers: TArrString[] = [
     {
         item: 'l',
         color: ElementStates.Modified
@@ -71,14 +72,14 @@ export const secondTestRevers = [
 
 ]
 
-export const thirdTest = [
+export const thirdTest: TArrString[] = [
     {
         item: 'l',
         color: ElementStates.Default
     },
 
 ]
-export const thirdTestRevers = [
+export const thirdTestRevers: TArrString[] = [
     {
         item: 'l',
         color: ElementStates.Modified
@@ -86,14 +87,14 @@ export const thirdTestRevers = [
 
 ]
 
-export const fourthTest = [
+export const fourthTest: TArrString[] = [
     {
         item: '',
         color: ElementStates.Default
     },
 
 ]
-export const fourthTestRevers = [
+export const fourthTestRevers: TArrString[] = [
     {
         item: '',
         color: ElementStates.Modified
