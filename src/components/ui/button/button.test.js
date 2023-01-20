@@ -5,32 +5,32 @@ import { Button } from './button'
 
 
 describe('Тестирование компонента Button', () => {
-    it('проверка кнопки с текстом', () => {
+    test('проверка кнопки с текстом', () => {
         const button = TestRenderer
             .create(<Button text={'Тест'} />)
             .toJSON();
         expect(button).toMatchSnapshot();
     })
 
-    it('проверка кнопки без текста', () => {
+    test('проверка кнопки без текста', () => {
         const button = TestRenderer
             .create(<Button />)
             .toJSON();
         expect(button).toMatchSnapshot();
     })
-    it('проверка заблокированной кнопки', () => {
+    test('проверка заблокированной кнопки', () => {
         const button = TestRenderer
             .create(<Button disabled={true} />)
             .toJSON();
         expect(button).toMatchSnapshot();
     })
-    it('проверка кнопки с индикацией загрузки', () => {
+    test('проверка кнопки с индикацией загрузки', () => {
         const button = TestRenderer
             .create(<Button isLoader={true} />)
             .toJSON();
         expect(button).toMatchSnapshot();
     })
-    it('проверка корректности вызова колбека при клике на кнопку', () => {
+    test('проверка корректности вызова колбека при клике на кнопку', () => {
         window.alert = jest.fn()
         render(<Button text={'Тест клика'} onClick={() => alert('кликнули')} />)
         const button = screen.getByText("Тест клика");
