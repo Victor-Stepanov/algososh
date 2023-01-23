@@ -18,7 +18,6 @@ export const StringComponent: FC = () => {
     //Swap элементов
 
     const reversArray = async (arr: TArrString[]) => {
-        console.log(arr)
         setIsLoading(true);
         const {length} = arr;
         let start = 0, end = length - 1
