@@ -1,4 +1,3 @@
-import {ElementStates} from "../../src/types/element-states";
 import {CIRCLE_CHANGING, CIRCLE_CIRCLE, CIRCLE_MODIFIED} from "../const/const";
 
 describe('Строка', () => {
